@@ -15,6 +15,5 @@ static NSString *kCellIdentifier_HcdGuideViewCell = @"HcdGuideViewCell";
 @interface HcdGuideViewCell : UICollectionViewCell
 
 @property (nonatomic, strong) UIImageView *imageView;
-@property (nonatomic, strong) UIButton *button;
 
 @end

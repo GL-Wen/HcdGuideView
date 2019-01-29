@@ -8,102 +8,86 @@
 
 #import "HcdGuideView.h"
 #import "HcdGuideViewCell.h"
+#import "Masonry.h"
 
-@interface HcdGuideView()<UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate>
+@interface HcdGuideView()
+<
+UICollectionViewDelegate,
+UICollectionViewDataSource,
+UIScrollViewDelegate
+>
 
-@property (nonatomic, strong) UICollectionView *view;
+@property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) NSArray *images;
-@property (nonatomic, strong) UIPageControl *pageControl;
-@property (nonatomic, strong) UIColor *buttonBgColor;
-@property (nonatomic, strong) UIColor *buttonBorderColor;
-@property (nonatomic, strong) UIColor *titleColor;
-@property (nonatomic, copy  ) NSString *buttonTitle;
 
 @end
 
 @implementation HcdGuideView
+@synthesize button = _button, pageControl = _pageControl, skipButton = _skipButton;
 
-+ (instancetype)sharedInstance {
-    static HcdGuideView *instance = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        instance = [HcdGuideView new];
-    });
-    return instance;
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    if (self = [super initWithFrame:frame]) {
+     
+        [self setupView];
+    }
+    return self;
 }
 
-/**
- *  引导页界面
- *
- *  @return 引导页界面
- */
-- (UICollectionView *)view {
-    if (!_view) {
-        
-        UICollectionViewFlowLayout *layout = [UICollectionViewFlowLayout new];
-        
-        layout.minimumInteritemSpacing = 0;
-        layout.minimumLineSpacing = 0;
-        layout.itemSize = kHcdGuideViewBounds.size;
-        layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-        
-        _view = [[UICollectionView alloc] initWithFrame:kHcdGuideViewBounds collectionViewLayout:layout];
-        _view.bounces = NO;
-        _view.backgroundColor = [UIColor whiteColor];
-        _view.showsHorizontalScrollIndicator = NO;
-        _view.showsVerticalScrollIndicator = NO;
-        _view.pagingEnabled = YES;
-        _view.dataSource = self;
-        _view.delegate = self;
-        
-        [_view registerClass:[HcdGuideViewCell class] forCellWithReuseIdentifier:kCellIdentifier_HcdGuideViewCell];
-    }
-    return _view;
-}
+- (void)setupView
+{
+    [self addSubview:self.collectionView];
+    [self addSubview:self.button];
+    [self addSubview:self.pageControl];
+    [self addSubview:self.skipButton];
 
-/**
- *  初始化pageControl
- *
- *  @return pageControl
- */
-- (UIPageControl *)pageControl {
-    if (_pageControl == nil) {
-        _pageControl = [[UIPageControl alloc] init];
-        _pageControl.frame = CGRectMake(0, 0, kHcdGuideViewBounds.size.width, 44.0f);
-        _pageControl.center = CGPointMake(kHcdGuideViewBounds.size.width / 2, kHcdGuideViewBounds.size.height - 60);
+    float offset = 0;
+    if (@available(iOS 11.0, *)) {
+        offset = UIApplication.sharedApplication.keyWindow.safeAreaInsets.bottom;
     }
-    return _pageControl;
+    
+    [self.button mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self);
+        make.bottom.equalTo(self).offset(-(52 + offset));
+    }];
+    
+    [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self);
+    }];
+    
+    [self.pageControl mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self);
+        make.bottom.equalTo(self).offset(-30);
+    }];
+    
+    offset = 0;
+    if (@available(iOS 11.0, *)) {
+        offset = UIApplication.sharedApplication.keyWindow.safeAreaInsets.top;
+    }
+    offset = offset > 0 ? offset : 20;
+    
+    [self.skipButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(44, 44));
+        make.top.equalTo(self).offset(offset);
+        make.right.equalTo(self).offset(-20);
+    }];
 }
 
 - (void)showGuideViewWithImages:(NSArray *)images
-                 andButtonTitle:(NSString *)title
-            andButtonTitleColor:(UIColor *)titleColor
-               andButtonBGColor:(UIColor *)bgColor
-           andButtonBorderColor:(UIColor *)borderColor {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *version = [[NSBundle mainBundle].infoDictionary objectForKey:@"CFBundleShortVersionString"];
+{
+    self.images = images;
+    self.pageControl.numberOfPages = images.count;
     
-    //根据版本号来判断是否需要显示引导页，一般来说每更新一个版本引导页都会有相应的修改
-    BOOL show = [userDefaults boolForKey:[NSString stringWithFormat:@"version_%@", version]];
-    
-    if (!show) {
-        self.images = images;
-        self.buttonBorderColor = borderColor;
-        self.buttonBgColor = bgColor;
-        self.buttonTitle = title;
-        self.titleColor = titleColor;
-        self.pageControl.numberOfPages = images.count;
-        
-        if (nil == self.window) {
-            self.window = [UIApplication sharedApplication].keyWindow;
-        }
-        
-        [self.window addSubview:self.view];
-        [self.window addSubview:self.pageControl];
-        
-        [userDefaults setBool:YES forKey:[NSString stringWithFormat:@"version_%@", version]];
-        [userDefaults synchronize];
+    if (nil == self.window) {
+        self.window = [UIApplication sharedApplication].keyWindow;
     }
+    
+    [self.collectionView reloadData];
+    [self.window addSubview:self];
+    
+    [self mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.window);
+    }];
 }
 
 #pragma mark - UICollectionViewDelegate & UICollectionViewDataSource
@@ -117,7 +101,7 @@
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
+        
     HcdGuideViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kCellIdentifier_HcdGuideViewCell forIndexPath:indexPath];
     
     UIImage *img = [self.images objectAtIndex:indexPath.row];
@@ -127,17 +111,6 @@
     cell.imageView.frame = CGRectMake(0, 0, size.width, size.height);
     cell.imageView.image = img;
     cell.imageView.center = CGPointMake(kHcdGuideViewBounds.size.width / 2, kHcdGuideViewBounds.size.height / 2);
-    
-    if (indexPath.row == self.images.count - 1) {
-        [cell.button setHidden:NO];
-        [cell.button addTarget:self action:@selector(nextButtonHandler:) forControlEvents:UIControlEventTouchUpInside];
-        [cell.button setBackgroundColor:self.buttonBgColor];
-        [cell.button setTitle:self.buttonTitle forState:UIControlStateNormal];
-        [cell.button setTitleColor:self.titleColor forState:UIControlStateNormal];
-        cell.button.layer.borderColor = [self.buttonBorderColor CGColor];
-    } else {
-        [cell.button setHidden:YES];
-    }
     
     return cell;
 }
@@ -164,23 +137,93 @@
 
 #pragma mark - UIScrollViewDelegate
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGFloat offset = scrollView.contentSize.width - scrollView.contentOffset.x - kHcdGuideViewBounds.size.width;
+    
+    CGFloat alpha = (1 - offset / kHcdGuideViewBounds.size.width);
+    self.button.alpha = alpha;
+}
+
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     
-    self.pageControl.currentPage = (scrollView.contentOffset.x / kHcdGuideViewBounds.size.width);
+    NSInteger index = (scrollView.contentOffset.x / kHcdGuideViewBounds.size.width);
+    
+    self.pageControl.currentPage = index;
+    self.skipButton.hidden       = (index == (self.images.count - 1));
 }
+
+#pragma mark - Action
 
 /**
  *  点击立即体验按钮响应事件
  *
  *  @param sender sender
  */
-- (void)nextButtonHandler:(id)sender {
-    
-    [self.pageControl removeFromSuperview];
-    [self.view removeFromSuperview];
-    [self setWindow:nil];
-    [self setView:nil];
-    [self setPageControl:nil];
+- (void)btnAction
+{    
+    [self removeFromSuperview];
+}
+
+#pragma mark - Get
+
+- (UIButton *)button
+{
+    if (!_button) {
+        _button = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_button addTarget:self action:@selector(btnAction) forControlEvents:UIControlEventTouchUpInside];
+        _button.alpha = 0;
+    }
+    return _button;
+}
+
+- (UIButton *)skipButton
+{
+    if (!_skipButton) {
+        _skipButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_skipButton setTitle:@"跳过" forState:UIControlStateNormal];
+        [_skipButton addTarget:self action:@selector(btnAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _skipButton;
+}
+
+/**
+ *  初始化pageControl
+ *
+ *  @return pageControl
+ */
+- (UIPageControl *)pageControl
+{
+    if (!_pageControl) {
+        _pageControl = [[UIPageControl alloc] init];
+        _pageControl.frame  = CGRectMake(0, 0, kHcdGuideViewBounds.size.width, 44.0f);
+        _pageControl.center = CGPointMake(kHcdGuideViewBounds.size.width / 2, kHcdGuideViewBounds.size.height - 60);
+    }
+    return _pageControl;
+}
+
+- (UICollectionView *)collectionView
+{
+    if (!_collectionView) {
+        UICollectionViewFlowLayout *layout = [UICollectionViewFlowLayout new];
+        
+        layout.minimumInteritemSpacing = 0;
+        layout.minimumLineSpacing = 0;
+        layout.itemSize = kHcdGuideViewBounds.size;
+        layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        
+        _collectionView = [[UICollectionView alloc] initWithFrame:kHcdGuideViewBounds collectionViewLayout:layout];
+        _collectionView.bounces = NO;
+        _collectionView.backgroundColor = [UIColor whiteColor];
+        _collectionView.showsHorizontalScrollIndicator = NO;
+        _collectionView.showsVerticalScrollIndicator = NO;
+        _collectionView.pagingEnabled = YES;
+        _collectionView.dataSource = self;
+        _collectionView.delegate = self;
+        
+        [_collectionView registerClass:[HcdGuideViewCell class] forCellWithReuseIdentifier:kCellIdentifier_HcdGuideViewCell];
+    }
+    return _collectionView;
 }
 
 @end

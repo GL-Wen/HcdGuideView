@@ -34,23 +34,7 @@
     self.imageView = [[UIImageView alloc]initWithFrame:kHcdGuideViewBounds];
     self.imageView.center = CGPointMake(kHcdGuideViewBounds.size.width / 2, kHcdGuideViewBounds.size.height / 2);
     
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    
-    button.hidden = YES;
-    [button setFrame:CGRectMake(0, 0, 200, 44)];
-    [button setTitle:@"立即体验" forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [button.layer setCornerRadius:5];
-    [button.layer setBorderColor:[UIColor grayColor].CGColor];
-    [button.layer setBorderWidth:1.0f];
-    [button setBackgroundColor:[UIColor whiteColor]];
-    
-    self.button = button;
-    
-    [self.contentView addSubview:self.imageView];
-    [self.contentView addSubview:self.button];
-    
-    [self.button setCenter:CGPointMake(kHcdGuideViewBounds.size.width / 2, kHcdGuideViewBounds.size.height - 100)];
+    [self.contentView addSubview:self.imageView];    
 }
 
 @end
