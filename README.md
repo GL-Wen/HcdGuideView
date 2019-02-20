@@ -12,6 +12,11 @@
 
 ![图片](https://raw.githubusercontent.com/Jvaeyhcd/HcdGuideView/master/screen.gif)
 
+Thanks for sharing, I just changed it a little.
+* cancel singleton mode
+* added skip button
+* the share button is immediately exposed as a property for the user to modify the style;
+
 ## Requirements
 * Xcode 6 or higher
 * iOS 7.0 or higher
