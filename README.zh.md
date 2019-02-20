@@ -12,6 +12,11 @@ HcdGuideView
 
 ![图片](https://raw.githubusercontent.com/Jvaeyhcd/HcdGuideView/master/screen.gif)
 
+感谢作者分享，我这里只是稍作一些改动；
+* 取消单例模式
+* 增加跳过按钮
+* 立即分享按钮作为一个属性暴露出来，方便使用者修改样式；
+
 ### 要求
 * Xcode 6 or higher
 * iOS 7.0 or higher
