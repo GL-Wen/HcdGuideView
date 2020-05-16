@@ -17,6 +17,7 @@
 		0C36D5081D34A4790024F605 /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C36D5051D34A4790024F605 /* 1.png */; };
 		0C36D5091D34A4790024F605 /* 2.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C36D5061D34A4790024F605 /* 2.png */; };
 		0C36D50A1D34A4790024F605 /* 3.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C36D5071D34A4790024F605 /* 3.png */; };
+		E79F1B077938A28654194CA5 /* Pods_HcdGuideViewDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1048B1C0FED5B26A23C6FC4 /* Pods_HcdGuideViewDemo.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,9 @@
 		0C36D5051D34A4790024F605 /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
 		0C36D5061D34A4790024F605 /* 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2.png; sourceTree = "<group>"; };
 		0C36D5071D34A4790024F605 /* 3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3.png; sourceTree = "<group>"; };
+		900F6639DC173D0EFC7006C1 /* Pods-HcdGuideViewDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HcdGuideViewDemo.debug.xcconfig"; path = "Target Support Files/Pods-HcdGuideViewDemo/Pods-HcdGuideViewDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		A265A02A31535F4312E439E0 /* Pods-HcdGuideViewDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HcdGuideViewDemo.release.xcconfig"; path = "Target Support Files/Pods-HcdGuideViewDemo/Pods-HcdGuideViewDemo.release.xcconfig"; sourceTree = "<group>"; };
+		D1048B1C0FED5B26A23C6FC4 /* Pods_HcdGuideViewDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HcdGuideViewDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E79F1B077938A28654194CA5 /* Pods_HcdGuideViewDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -54,6 +59,8 @@
 			children = (
 				0C36D4DC1D34931B0024F605 /* HcdGuideViewDemo */,
 				0C36D4DB1D34931A0024F605 /* Products */,
+				2236C19FD2B679CFC0C33A22 /* Pods */,
+				C817CBCA22D2725A17CD2543 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -111,6 +118,24 @@
 			path = images;
 			sourceTree = "<group>";
 		};
+		2236C19FD2B679CFC0C33A22 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				900F6639DC173D0EFC7006C1 /* Pods-HcdGuideViewDemo.debug.xcconfig */,
+				A265A02A31535F4312E439E0 /* Pods-HcdGuideViewDemo.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		C817CBCA22D2725A17CD2543 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D1048B1C0FED5B26A23C6FC4 /* Pods_HcdGuideViewDemo.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -118,9 +143,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0C36D4F11D34931B0024F605 /* Build configuration list for PBXNativeTarget "HcdGuideViewDemo" */;
 			buildPhases = (
+				235B4C30984CCD11A2AE44FB /* [CP] Check Pods Manifest.lock */,
 				0C36D4D61D34931A0024F605 /* Sources */,
 				0C36D4D71D34931A0024F605 /* Frameworks */,
 				0C36D4D81D34931A0024F605 /* Resources */,
+				D302E112D0330E6A5EC9E206 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -177,6 +204,49 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		235B4C30984CCD11A2AE44FB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-HcdGuideViewDemo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D302E112D0330E6A5EC9E206 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HcdGuideViewDemo/Pods-HcdGuideViewDemo-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HcdGuideViewDemo/Pods-HcdGuideViewDemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		0C36D4D61D34931A0024F605 /* Sources */ = {
@@ -289,6 +359,7 @@
 		};
 		0C36D4F21D34931B0024F605 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 900F6639DC173D0EFC7006C1 /* Pods-HcdGuideViewDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = HcdGuideViewDemo/Info.plist;
@@ -301,6 +372,7 @@
 		};
 		0C36D4F31D34931B0024F605 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A265A02A31535F4312E439E0 /* Pods-HcdGuideViewDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = HcdGuideViewDemo/Info.plist;

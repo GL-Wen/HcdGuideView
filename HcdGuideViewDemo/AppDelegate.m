@@ -32,13 +32,8 @@
     [images addObject:[UIImage imageNamed:@"2"]];
     [images addObject:[UIImage imageNamed:@"3"]];
     
-    HcdGuideView *guideView = [HcdGuideView sharedInstance];
+    HcdGuideView *guideView = [HcdGuideView new];
     guideView.window = self.window;
-    [guideView showGuideViewWithImages:images
-                        andButtonTitle:@"立即体验"
-                   andButtonTitleColor:[UIColor whiteColor]
-                      andButtonBGColor:[UIColor clearColor]
-                  andButtonBorderColor:[UIColor whiteColor]];
     
     return YES;
 }
